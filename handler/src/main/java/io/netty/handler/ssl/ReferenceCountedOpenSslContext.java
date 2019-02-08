@@ -342,6 +342,9 @@ public abstract class ReferenceCountedOpenSslContext extends SslContext implemen
             if (enableOcsp) {
                 SSLContext.enableOcsp(ctx, isClient());
             }
+
+            // TODO: Make the configurable.
+            SSLContext.setUseTasks(ctx, true);
             success = true;
         } finally {
             if (!success) {
