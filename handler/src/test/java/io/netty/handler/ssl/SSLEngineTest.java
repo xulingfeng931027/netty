@@ -1517,10 +1517,8 @@ public abstract class SSLEngineTest {
             for (;;) {
                 Runnable task = engine.getDelegatedTask();
                 if (task == null) {
-                    assertNotEquals(SSLEngineResult.HandshakeStatus.NEED_TASK, engine.getHandshakeStatus());
                     break;
                 }
-                assertEquals(SSLEngineResult.HandshakeStatus.NEED_TASK, engine.getHandshakeStatus());
                 if (delegatingExecutor == null) {
                     task.run();
                 } else {

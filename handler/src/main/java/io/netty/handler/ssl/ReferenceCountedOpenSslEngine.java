@@ -1731,6 +1731,10 @@ public class ReferenceCountedOpenSslEngine extends SSLEngine implements Referenc
             // Everything else is considered as error
             throw shutdownWithError("SSL_do_handshake", sslError);
         }
+        // We have produced more data as part of the handshake if this is the case the user should call wrap(...)
+        if (SSL.bioLengthNonApplication(networkBIO) > 0) {
+            return NEED_WRAP;
+        }
         // if SSL_do_handshake returns > 0 or sslError == SSL.SSL_ERROR_NAME it means the handshake was finished.
         session.handshakeFinished();
         engineMap.remove(ssl);
