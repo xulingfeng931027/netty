@@ -1319,7 +1319,7 @@ public class ReferenceCountedOpenSslEngine extends SSLEngine implements Referenc
         }
         final Runnable task = SSL.getTask(ssl);
         if (task == null) {
-            return task;
+            return null;
         }
         return new Runnable() {
             @Override
