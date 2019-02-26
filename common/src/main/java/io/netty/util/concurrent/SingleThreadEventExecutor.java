@@ -355,8 +355,8 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
             if (runAllTasksFrom(taskQueue)) {
                 ranAtLeastOne = true;
             }
-        } while (!fetchedAll); // keep on processing until we fetched all scheduled tasks.
-
+            // keep on processing until we fetched all scheduled tasks.
+        } while (!fetchedAll);
         if (ranAtLeastOne) {
             lastExecutionTime = ScheduledFutureTask.nanoTime();
         }
@@ -751,7 +751,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         if (task == null) {
             throw new NullPointerException("task");
         }
-
+        //判断线程是否为外部线程,刚开始没创建线程,返回false
         boolean inEventLoop = inEventLoop();
         addTask(task);
         if (!inEventLoop) {
