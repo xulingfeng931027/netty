@@ -1,4 +1,6 @@
-package io.netty.demo.wechat.serializer;
+package io.netty.wechat.protocol.packet;
+
+import io.netty.wechat.protocol.Command;
 
 /**
  * 登录请求的对象

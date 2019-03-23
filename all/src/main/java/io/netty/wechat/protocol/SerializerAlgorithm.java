@@ -1,4 +1,4 @@
-package io.netty.demo.wechat.serializer;
+package io.netty.wechat.protocol;
 
 /**
  * 定义序列化算法标识的常量

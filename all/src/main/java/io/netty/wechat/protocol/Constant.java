@@ -1,4 +1,4 @@
-package io.netty.demo.wechat.serializer;
+package io.netty.wechat.protocol;
 
 public final class Constant
 {

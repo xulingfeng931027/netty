@@ -1,4 +1,4 @@
-package io.netty.demo.wechat.serializer;
+package io.netty.wechat.protocol.packet;
 
 public abstract class Packet
 {

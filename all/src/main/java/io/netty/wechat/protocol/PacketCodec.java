@@ -1,7 +1,8 @@
-package io.netty.demo.wechat.serializer;
+package io.netty.wechat.protocol;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.wechat.protocol.packet.*;
 
 /**
  * 首先，我们需要创建一个 ByteBuf，这里我们调用 Netty 的 ByteBuf 分配器来创建，ioBuffer()方法会返回适配 io 读写相关的内存，
@@ -42,7 +43,7 @@ public class PacketCodec
         //跳过版本号
         byteBuf.skipBytes(1);
         //序列化算法标识
-        byte serializeAlgorittm = byteBuf.readByte();
+        byte serializeAlgorithm = byteBuf.readByte();
         //指令
         byte command = byteBuf.readByte();
         //数据包长度
@@ -56,7 +57,7 @@ public class PacketCodec
         Class<? extends Packet> requestType = getRequestType(command);
 
         //根据序列化算法决定序列化方法
-        Serializer serializer = getSerializer(serializeAlgorittm);
+        Serializer serializer = getSerializer(serializeAlgorithm);
 
         if (serializer != null && requestType != null)
         {
@@ -74,6 +75,14 @@ public class PacketCodec
        else if (Command.LOGIN_RESPONSE.equals(command))
         {
             return LoginResponsePacket.class;
+        }
+        else if (Command.MESSAGE_REQUEST.equals(command))
+        {
+            return MessageRequestPacket.class;
+        }
+        else if (Command.MESSAGE_RESPONSE.equals(command))
+        {
+            return MessageResponsePacket.class;
         }
         return null;
     }

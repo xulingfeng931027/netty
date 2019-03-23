@@ -1,15 +1,22 @@
-package io.netty.demo.wechat.handler;
+package io.netty.wechat.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.demo.wechat.serializer.LoginRequestPacket;
-import io.netty.demo.wechat.serializer.LoginResponsePacket;
-import io.netty.demo.wechat.serializer.Packet;
-import io.netty.demo.wechat.serializer.PacketCodec;
+import io.netty.wechat.protocol.packet.*;
+import io.netty.wechat.protocol.PacketCodec;
+
+import java.util.Date;
 
 public class ServerHandler extends ChannelInboundHandlerAdapter
 {
+    /**
+     * 当有连接读取数据时调用
+     *
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg)
         throws Exception
@@ -39,7 +46,16 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
             ByteBuf responseBytebuf = PacketCodec.INSTANCE.encode(ctx.alloc(), responsePacket);
             ctx.writeAndFlush(responseBytebuf);
         }
+        else if (packet instanceof MessageRequestPacket)
+        {
+            MessageRequestPacket messageRequestPacket = (MessageRequestPacket)packet;
+            System.out.println(new Date() + "收到客户端消息:" + messageRequestPacket.getMessage());
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setMessage("服务端回复:【" + "response:" + messageRequestPacket.getMessage() + "】");
+            ByteBuf responseByteBuf = PacketCodec.INSTANCE.encode(ctx.alloc(), messageResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
 
+        }
 
     }
 

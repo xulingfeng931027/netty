@@ -1,13 +1,11 @@
-package io.netty.demo.wechat.bootstrap;
+package io.netty.wechat.bootstrap;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.demo.wechat.handler.ServerHandler;
+import io.netty.wechat.handler.ServerHandler;
 
 public class WechatServer
 {
@@ -17,7 +15,7 @@ public class WechatServer
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.channel(NioServerSocketChannel.class).
+        ChannelFuture future = bootstrap.channel(NioServerSocketChannel.class).
             option(ChannelOption.SO_BACKLOG, 1024)
             .childOption(ChannelOption.SO_KEEPALIVE, true)
             .childOption(ChannelOption.TCP_NODELAY, true)
@@ -30,7 +28,9 @@ public class WechatServer
                 {
                     ch.pipeline().addLast(new ServerHandler());
                 }
-            }).bind(8888);
+            }).bind(8888).sync();
+
+
 
     }
 }
